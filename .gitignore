@@ -1,3 +1,4 @@
+*.csv
 *.pyc
 # Setuptools distribution folder.
 /dist/
