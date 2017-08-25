@@ -50,12 +50,13 @@ ______________
 
 `state`
 
-`additions`
 
 ## TODO (in order of importance)
 - [ ] Figure out some kind of way for people to authenticate with the GitHub API with their own creds in a way that lets them query repos from private organizations that enforce SSO SAML. This is extra important since a key use case is people to be able to pull statistics on their own companies' private repositories, and without some way to authenticate, that isn't possible.
+- [ ] Make more performant -- currently it does 3 HTTP requests per pull request, which is v v slow and just :(
 - [ ] Less awful janky argument passing
 - [ ] Batch gender API calls by 10, also figure out how to increase the limit on this (currently 1000/day, which is nothing)
 - [ ] Clean up `__init__.py` since its gross
+- [ ] Clean up these docs
 - [ ] Add an option for either CSV or JSON.
 - [ ] and more!

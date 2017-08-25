@@ -25,8 +25,8 @@ def repostats(url = "", out_csv_location = ""):
     print(len(pulls))
 
     # TODO: replace with commented out line, its so i dont get rate limited while developing
-    for pull in [pulls[1]]:
-    # for pull in pulls:
+    # for pull in [pulls[1]]:
+    for pull in pulls:
         stats = {}
 
         stats["author"] = pull["user"]["login"]
