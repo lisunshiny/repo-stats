@@ -5,8 +5,9 @@ This project is meant to make it easier for people to pull statistics on pull re
 It was motivated by these studies, which seem to suggest that women are scrutinized more than men in their
 peer-reviewed work (e.g. academic papers, pull requests).
 
-https://peerj.com/preprints/1733/
-http://www.erinhengel.com/research/publishing_female.pdf
+* https://peerj.com/preprints/1733/
+
+* http://www.erinhengel.com/research/publishing_female.pdf
 
 When I heard about these papers, I became interested in polling statistics to see if there are any differences
 in how pull requests are reviewed between different marginalized groups in tech. While this is just a POC,
