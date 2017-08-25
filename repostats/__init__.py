@@ -6,26 +6,30 @@ TOP_LEVEL_FIELDS_TO_IMPORT = ["state", "url", "created_at", "updated_at", "close
 
 def repostats(url = "", out_csv_location = ""):
     stat_arr = []
-    # BC im lazy
+    # BC im lazy, default to the Ace editor
     if url is "":
         url = "https://api.github.com/repos/ajaxorg/ace/pulls"
+    else:
+        url = "https://api.github.com/repos/" + url + "/pulls"
 
     if out_csv_location is "":
         out_csv_location = "lol.csv"
 
     # TODO(add a different kind of auth so that other people can use my package)
-    r = requests.get(url, auth=('lisunshiny', os.environ.get('GITHUB_SECRET_KEY'))
+    params = {"state":"all"}
+    r = requests.get(url, auth=('lisunshiny', os.environ.get('GITHUB_SECRET_KEY')), params=params)
     pulls = r.json()
 
-    # TODO(remove this, its so i dont get rate limited)
-    for pull in [pulls[0]]:
+    # TODO: replace with commented out line, its so i dont get rate limited while developing
+    for pull in [pulls[1]]:
+    # for pull in pulls:
         stats = {}
 
         stats["author"] = pull["user"]["login"]
         stats["probable_gender"] = get_gender(pull["user"]["login"])
 
         stats["state"] = pull["state"]
-        stats.update(get_number_of_comments(pull["review_comments_url"], pull["user"]["login"]))
+        stats.update(get_number_of_comments(pull["comments_url"], pull["user"]["login"]))
         for field in TOP_LEVEL_FIELDS_TO_IMPORT:
             stats[field] = pull[field]
 
@@ -36,9 +40,6 @@ def repostats(url = "", out_csv_location = ""):
             writer = csv.DictWriter(f, fieldnames=stat_arr[0].keys())
             writer.writeheader()
             writer.writerows(stat_arr)
-
-    print(stat_arr)
-
 
 def get_gender(login):
     # TODO: batch these by 10 to avoid getting rate limited
