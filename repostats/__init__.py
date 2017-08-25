@@ -3,6 +3,7 @@ import csv
 import os
 
 TOP_LEVEL_FIELDS_TO_IMPORT = ["state", "url", "created_at", "updated_at", "closed_at", "merged_at"]
+PULL_LEVEL_FIELDS_TO_IMPORT =  ["comments", "commits", "additions", "deletions"]
 
 def repostats(url = "", out_csv_location = ""):
     stat_arr = []
@@ -20,16 +21,20 @@ def repostats(url = "", out_csv_location = ""):
     r = requests.get(url, auth=('lisunshiny', os.environ.get('GITHUB_SECRET_KEY')), params=params)
     pulls = r.json()
 
+    print("analyzing this many pulls:")
+    print(len(pulls))
+
     # TODO: replace with commented out line, its so i dont get rate limited while developing
     for pull in [pulls[1]]:
     # for pull in pulls:
         stats = {}
 
         stats["author"] = pull["user"]["login"]
-        stats["probable_gender"] = get_gender(pull["user"]["login"])
+        stats["predicted_gender"] = get_gender(pull["user"]["login"])
 
         stats["state"] = pull["state"]
         stats.update(get_number_of_comments(pull["comments_url"], pull["user"]["login"]))
+        stats.update(get_pull_level_fields(pull["url"], pull["user"]["login"]))
         for field in TOP_LEVEL_FIELDS_TO_IMPORT:
             stats[field] = pull[field]
 
@@ -40,12 +45,12 @@ def repostats(url = "", out_csv_location = ""):
             writer = csv.DictWriter(f, fieldnames=stat_arr[0].keys())
             writer.writeheader()
             writer.writerows(stat_arr)
+        print("success! printed results as a CSV to " + out_csv_location)
 
 def get_gender(login):
     # TODO: batch these by 10 to avoid getting rate limited
-    r = requests.get("https://api.github.com/users/" + login)
+    r = requests.get("https://api.github.com/users/" + login, auth=('lisunshiny', os.environ.get('GITHUB_SECRET_KEY')))
     user_info = r.json()
-
     if user_info["name"] is None:
         return None
 
@@ -70,5 +75,16 @@ def get_number_of_comments(url, author):
             data["comments_by_self"] += 1
         else:
             data["comments_by_self"] += 1
+
+    return data
+
+# returns {"comments": X, "review_comments": Y, "additions", etc}
+def get_pull_level_fields(url, author):
+    # TODO(add a different kind of auth so that other people can use my package)
+    r = requests.get(url, auth=('lisunshiny', os.environ.get('GITHUB_SECRET_KEY')))
+    pull_info = r.json()
+    data = {}
+    for field in PULL_LEVEL_FIELDS_TO_IMPORT:
+        data[field] = pull_info[field]
 
     return data
