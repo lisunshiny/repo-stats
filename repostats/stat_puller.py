@@ -18,7 +18,6 @@ class StatPuller(object):
         github_secret_key = os.environ.get('GITHUB_SECRET_KEY')
         # END remove
 
-        self.url = url
         self.csv_location = csv_location
         self.route_manager = ApiRouteManger(repo, (github_username, github_secret_key))
 
@@ -28,3 +27,8 @@ class StatPuller(object):
 
     def write_to_csv(self):
         print("writing to csv")
+'''
+import stat_puller
+from stat_puller import StatPuller
+StatPuller("Appboy/platform", "lol.csv", "lisunshiny", "will_be_replaced")
+'''

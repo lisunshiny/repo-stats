@@ -11,9 +11,9 @@ class ApiRouteManger(object):
         # Will raise an error if they're not valid.
         self.validate_credentials()
 
-    def validate_credentials(self, repo, github_username, github_secret_key):
-        url = get_pulls_url()
-        r = requests.get(url, auth=self.api_creds)
+    def validate_credentials(self):
+        url = self.get_pulls_url()
+        r = requests.get(url, auth=self.credentials)
 
         if r.status_code is not requests.codes.ok:
             raise ValueError("Your credentials are invalid and/or your repository does not exist.")
@@ -23,7 +23,7 @@ class ApiRouteManger(object):
 
     # @return String in the form of "https://api.github.com/AccountNAme/repo-name/pulls"
     def get_pulls_url(self):
-        return [base_url, "repos/", self.repo, "/pulls"].join()
+        return self.base_url + "repos/" + self.repo + "/pulls"
 
     def get_pulls_opts(self):
         return {"state": "all"}
