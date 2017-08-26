@@ -1,8 +1,8 @@
 import requests
 import csv
 import os
-
-github_
+import api_route_manager
+from api_route_manager import ApiRouteManger
 
 class StatPuller(object):
     top_level_fields_to_import = ["state", "url", "created_at", "updated_at", "closed_at", "merged_at"]
@@ -13,14 +13,18 @@ class StatPuller(object):
     # @param github_username String your GitHub username (for API credentials)
     # @param github_secret_key String your GitHub secret key (for API credentials)
     def __init__(self, repo, csv_location, github_username, github_secret_key):
-        self.validate_credentials(repo, github_username, github_secret_key)
+        # TODO remove hardcode in working stuff
+        github_username = "lisunshiny"
+        github_secret_key = os.environ.get('GITHUB_SECRET_KEY')
+        # END remove
 
         self.url = url
         self.csv_location = csv_location
-        self.api_creds = (github_username, github_secret_key)
+        self.route_manager = ApiRouteManger(repo, (github_username, github_secret_key))
 
-    def validate_credentials(self, repo, github_username, github_secret_key):
-        post
-
-    def get_stats(self):
+    def get_pulls(self):
         print("asdfasdf")
+
+
+    def write_to_csv(self):
+        print("writing to csv")
