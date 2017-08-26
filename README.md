@@ -53,10 +53,13 @@ ______________
 
 
 ## TODO (in order of importance)
+
+** Note that I'm working on a fairly substantial refactor right now in the `refactor` branch. I'm also considering (although not actively developing) adding a frontend for this to make it easier for people to use, since if your organization has a lot of pulls this will take forever (e.g. you could get the CSV emailed to you), it would allow caching of some of the more popular open source repos, and the genderize API has fairly low limits (1000) on users. **
+
 - [ ] Figure out some kind of way for people to authenticate with the GitHub API with their own creds in a way that lets them query repos from private organizations that enforce SSO SAML. This is extra important since a key use case is people to be able to pull statistics on their own companies' private repositories, and without some way to authenticate, that isn't possible.
 - [ ] Make more performant -- currently it does 3 HTTP requests per pull request, which is v v slow and just :(
 - [ ] Less awful janky argument passing
-- [ ] Batch gender API calls by 10, also figure out how to increase the limit on this (currently 1000/day, which is nothing)
+- [ ] Batch gender API calls by 10 and cache results, also figure out how to increase the limit on this (currently 1000/day, which is nothing)
 - [ ] Clean up `__init__.py` since its gross
 - [ ] Clean up these docs
 - [ ] Add an option for either CSV or JSON.
