@@ -21,8 +21,8 @@ class StatPuller(object):
         self.csv_location = csv_location
         self.route_manager = ApiRouteManger(repo, (github_username, github_secret_key))
 
-    def get_pulls(self):
-        print("asdfasdf")
+    def pull_stats(self):
+        return self.route_manager.get_pulls()
 
 
     def write_to_csv(self):
@@ -30,5 +30,6 @@ class StatPuller(object):
 '''
 import stat_puller
 from stat_puller import StatPuller
-StatPuller("Appboy/platform", "lol.csv", "lisunshiny", "will_be_replaced")
+puller = StatPuller("Appboy/platform", "lol.csv", "lisunshiny", "will_be_replaced")
+puller.pull_stats()
 '''
